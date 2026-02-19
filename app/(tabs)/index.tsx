@@ -1,8 +1,10 @@
 import axios from "axios";
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
+  Pressable,
   StyleSheet,
   Text,
   View,
@@ -16,6 +18,7 @@ interface Post {
 }
 
 export default function HomeScreen() {
+  const router = useRouter();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -74,6 +77,12 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
+      <Pressable
+        style={styles.button}
+        onPress={() => router.push("/stackPage")}
+      >
+        <Text style={styles.buttonText}>Go to Stack Page</Text>
+      </Pressable>
       <FlatList
         data={posts}
         renderItem={renderCard}
@@ -216,5 +225,18 @@ const styles = StyleSheet.create({
     color: "#333",
     marginVertical: 5,
     fontWeight: "500",
+  },
+  button: {
+    backgroundColor: "#007AFF",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    margin: 16,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
