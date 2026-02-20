@@ -2,6 +2,8 @@ import SimpleInput from "@/components/SimpleInput/SimpleInput";
 import { useState } from "react";
 import {
   Keyboard,
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -13,35 +15,40 @@ export default function HomeScreen() {
   const [password, setPassword] = useState("");
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Sign in to your account</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <Text style={styles.title}>Welcome Back</Text>
+            <Text style={styles.subtitle}>Sign in to your account</Text>
 
-          <View style={styles.inputWrapper}>
-            <Text style={styles.label}>Email Address</Text>
-            <SimpleInput
-              placeholder="your@email.com"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-            />
-          </View>
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Email Address</Text>
+              <SimpleInput
+                placeholder="your@email.com"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+              />
+            </View>
 
-          <View style={styles.inputWrapper}>
-            <Text style={styles.label}>Password</Text>
-            <SimpleInput
-              placeholder="Enter your password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
-              showPasswordToggle={true}
-            />
+            <View style={styles.inputWrapper}>
+              <Text style={styles.label}>Password</Text>
+              <SimpleInput
+                placeholder="Enter your password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={true}
+                showPasswordToggle={true}
+              />
+            </View>
           </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -54,7 +61,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   formContainer: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: Platform.select({
+      ios: "#FFFFFF",
+      android: "#FF0000",
+    }),
     borderRadius: 12,
     padding: 24,
     shadowColor: "#000",
@@ -62,6 +72,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 3,
+    ...Platform.select({
+      ios: {
+        backgroundColor: "#FFFFFF",
+      },
+      android: {
+        backgroundColor: "#FF0000",
+      },
+    }),
   },
   title: {
     fontSize: 28,
